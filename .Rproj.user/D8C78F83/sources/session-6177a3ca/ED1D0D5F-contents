@@ -277,13 +277,6 @@ server <- function(input, output, session) {
     length(df$serial_number)
   })
   
-  #reactive extraction of selected products for legend
-  selected_products <- reactive({
-    df <- filtered_data()
-    unique(df$product_clean)
-    # unique(filtered_data()[[input$product_clean]])
-  })
-  
   # if data exists, display map, otherwise, display note
   output$map_or_message <- renderUI({
     if (has_data()) {
@@ -304,14 +297,7 @@ server <- function(input, output, session) {
       addCircleMarkers(data = filtered_data(), lng = ~lon_jitter, lat = ~lat_jitter, color = ~color, popup = ~paste("<b>Serial Number: </b>", serial_number, '<br>',
                                                                                                                     '<b>Account: </b>', account_name, '<br>',
                                                                                                                     '<b>Coverage: </b>', type, '<br>',
-                                                                                                                    '<b>FSE: </b>', primary_fse)) %>% 
-      
-      addLegend(
-        position = "topright",
-        colors = colors_mapping[1:length(selected_products())],
-        labels = selected_products(),
-        title = "Product(s)")
-    
+                                                                                                                    '<b>FSE: </b>', primary_fse))
     #FSE markers
     if(nrow(filtered_fse()) > 0){
       l %>% addMarkers(data = filtered_fse(), lng = ~lon, lat = ~lat, popup = ~paste('<b>FSE: </b>', primary_fse))
@@ -330,12 +316,7 @@ server <- function(input, output, session) {
       addCircleMarkers(data = filtered_data(), lng = ~lon_jitter, lat = ~lat_jitter, color = ~color, popup = ~paste("<b>Serial Number: </b>", serial_number, '<br>',
                                                                                                                     '<b>Account: </b>', account_name, '<br>',
                                                                                                                     '<b>Coverage: </b>', type, '<br>',
-                                                                                                                    '<b>FSE: </b>', primary_fse)) %>% 
-      addLegend(
-        position = "topright",
-        colors = colors_mapping[1:length(selected_products())],
-        labels = selected_products(),
-        title = "Product(s)")
+                                                                                                                    '<b>FSE: </b>', primary_fse))
     
     #FSE markers
     if(nrow(filtered_fse()) >0){
